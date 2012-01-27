@@ -1,0 +1,305 @@
+/*
+FFDFBF = Hintergrund beige
+B28A62 = Navihintergrund braun
+FFD2A6 = seitenhintergrund
+509CB2 = dunkelblau
+A6EBFF = LinkHover hellbau
+
+*/
+
+/* common html tags */
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Verdana, sans-serif;
+	background: #ffd2a6;
+}
+
+ul {
+	list-style-type: none;
+}
+
+/* content areas */
+
+
+#title_bar {
+	height: 44px;
+	background:#FFDFBF;
+}
+
+#header_bar {
+	height: 180px;
+	//background: #509CB2;
+	//float:left;
+	background: #fff url('../jpg/start3.jpg') no-repeat top left;
+}
+
+#wrap {
+    margin: 10px 0 0 0;
+	padding: 10px;
+	//margin-bottom:10px;
+	//float: left;
+	//width: 0px;
+}
+
+#pic_area {
+	float:left;
+	padding:10px;
+	width:350px;
+	//border-right: 5px solid #B28A62;
+	margin-right:30px;
+}
+
+
+
+#content_area {
+	padding-left:380px;
+	min-width:500px;
+	width:auto;
+	//border-right: 5px solid #B28A62;
+	margin-right:30px;
+}
+
+#info_area {
+	#position:relative;
+	padding-left:980px;
+	width:250px;
+	//width:auto;
+	
+	
+	border-right: 5px solid #B28A62;
+}
+
+.clear {
+clear: both;
+}
+
+
+.book_info {
+    color: #000;
+    font-size:10pt;
+    background: #FFDFBF;
+    padding:10px;
+    margin-left:10px;
+    padding-right:10px;
+}
+
+.pic_bar {
+	color: #000;
+	background: #509CB2;
+    padding:10px;
+}
+
+#fusszeile {
+	clear: both;
+	background: #B28A62;
+	padding: 10px;
+	margin-top:10px;
+	border-top: 2px solid #ddd;
+	text-align: center;
+	color: #FFD2A6;
+	//position:relative;
+	//bottom:0px;
+	//margin-left:-450px;
+}
+
+/* special contents */
+
+#title {
+   text-decoration: none;
+   font-family:Georgia, serif;
+   font-size:20px;
+   font-weight:bold;
+   letter-spacing:0.1em;
+   margin-top:8px;
+   margin-right:30px;
+	 color: #B28A62;
+	 float:left;
+	
+}
+
+img.header_img {
+    padding:8px;
+    height:130px;
+}
+
+a:link {
+  color:black;
+}
+
+#nav {
+	background: #B28A62;
+	//margin-top:-20px;
+	
+  padding: 0px;
+	float: right;
+	width: 100%;
+}
+
+
+
+/*
+Durch diese Regel erscheint "nav", als waere es Teil von "wrap".
+*/
+#nav ul {
+	list-style-type: none;
+}
+
+#nav ul li {
+padding: 5px;
+float:left;
+}
+
+#nav ul li a {
+	text-decoration: none;
+	color: #000;
+	font-weight: bold;
+	padding:5px;
+}
+#nav ul li.aktiv {
+	background: #FFD2A6;
+	color: #509CB2;
+}
+
+#nav ul li a.aktiv {
+	//background: #FFD2A6;
+	//color: #509CB2;//
+	//border-top: 2px solid #ccc;
+}
+
+#nav ul li a:hover {
+color: #A6EBFF;
+}
+
+ul.link_list {
+  //margin-left:440px;
+  padding-left:10px;
+  list-style:none;
+  background-color:#A6EBFF;
+}
+
+li a {
+   text-decoration: none;
+   font-size:12px;
+}
+
+a.pagelink {
+	text-decoration: none;
+	color:black;
+	background-image:url(../gif/arrowB28A62_1.gif);
+	background-repeat:no-repeat;
+	padding-left:16px;
+}
+
+
+
+p.pagelink {
+	background-image:url(../jpg/arrowB28A62_1.gif);
+	background-repeat:no-repeat;
+	background-color:yellow;
+}
+
+
+/*a.list_link {
+   text-decoration: none;
+   font-size:12px;
+   //letter-spacing:0.1em;
+   color:black;
+	 
+}
+
+p.list_link {
+   //margin-top:8px;
+   //margin-right:30px;
+   padding-left:30px;
+   text-decoration: none;
+   font-size:12px;
+   //letter-spacing:0.1em;
+   color:black;
+   background-color:#A6EBFF;
+}
+
+p.list_link:hover {
+   background-color:#509CB2;
+   color:white;
+   cursor:hand;
+   
+}
+
+a.list_link:hover {
+  color:#FFD2A6;
+}*/
+
+img.pic {
+    padding:5px;
+    width:200px;
+}
+
+img.travelpics {
+    padding:5px;
+}
+
+
+img.travelpics_2h {
+    
+    width:150px;
+    height:110px;
+}
+
+img.travelpics_2v {
+    
+    width:150px;
+    height:210px;
+}
+
+img.travelpics_1h {
+    
+    width:315px;
+    //height:110px;
+}
+
+img.travelpics_1v {
+    
+    width:315px;
+    //height:210px;
+}
+
+
+
+#breadcrumb ul {
+	list-style-type: square;
+}
+
+#breadcrumb ul li {
+padding: 5px;
+
+}
+
+#breadcrumb ul li a {
+	text-decoration: none;
+	color: #000;
+	//font-weight: bold;
+	padding:5px;
+	font-size:10pt;
+}
+#breadcrumb ul li.aktiv {
+	background: #FFD2A6;
+	color: #509CB2;
+}
+
+#breadcrumb ul li:hover {
+background-color: #A6EBFF;
+}
+
+
+
+
+
+/*
+FFDFBF
+B28A62
+FFD2A6
+509CB2 
+A6EBFF
+
+*/
