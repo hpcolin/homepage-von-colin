@@ -27,27 +27,9 @@ binmode STDOUT, ':encoding(UTF-8)';
 my $page    = $cgi->param('page') || 'index';
 my $subpage = $cgi->param('sub')  || '';
 
-my %mapping = qw(
-index index
-books  books
-impressum impressum
-mongers mongers
-travel travel
-france1998 france1998
-greece1997 greece1997
-uk1997 uk1997
-uk1999 uk1999
-);
-
-$page = defined $mapping{$page} ? $mapping{$page} : 'failure';
-
 my $class_param = {
     page    => $page,
-    subpage => $page eq 'travel' 
-        ? defined $mapping{$subpage} 
-            ? $mapping{$subpage} 
-            : ''
-        : '',
+    subpage => $subpage,
     cgi     => $cgi,
 };
 
@@ -62,6 +44,21 @@ $page_obj->get_html();
 #Unicode::String::latin1( $all );
 
 $page_obj->set_end_page(end_html());
+
+$page_obj->set_link_attr(Link( {
+            -rel  => 'canonical',
+		    -href => 'jungleware.de'
+        }));
+
+if ($page eq 'travel') {
+    $page_obj->add_javascript('scriptaculous',1);
+    $page_obj->add_javascript('lightbox',1);
+    $page_obj->add_css('lightbox',1);
+}
+
+if ($page eq 'impressum') {
+	$page_obj->sub_addressdata();
+}
 
 $page_obj->send_page();
 

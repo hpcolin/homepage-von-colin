@@ -6,7 +6,6 @@ FFD2A6 = seitenhintergrund
 A6EBFF = LinkHover hellbau
 
 */
-
 /* common html tags */
 body {
 	margin: 0;
@@ -20,123 +19,119 @@ ul {
 }
 
 /* content areas */
-
-
 #title_bar {
 	height: 44px;
-	background:#FFDFBF;
+	background: #FFDFBF;
 }
 
 #header_bar {
-	height: 180px;
-	//background: #509CB2;
-	//float:left;
+	height: 190px; //
+	background: #509CB2; //
+	float: left;
 	background: #fff url('../jpg/start3.jpg') no-repeat top left;
 }
 
 #wrap {
-    margin: 10px 0 0 0;
-	padding: 10px;
-	//margin-bottom:10px;
-	//float: left;
-	//width: 0px;
+	margin: 10px 0 0 0;
+	padding: 10px; //
+	margin-bottom: 10px; //
+	float: left; //
+	width: 0px;
 }
 
 #pic_area {
-	float:left;
-	padding:10px;
-	width:350px;
-	//border-right: 5px solid #B28A62;
-	margin-right:30px;
+	float: left;
+	padding: 10px;
+	width: 350px; //
+	border-right: 5px solid #B28A62;
+	margin-right: 30px;
 }
-
-
 
 #content_area {
-	padding-left:380px;
-	min-width:500px;
-	width:auto;
-	//border-right: 5px solid #B28A62;
-	margin-right:30px;
+	padding-left: 380px;
+	min-width: 500px;
+	width: auto; //
+	border-right: 5px solid #B28A62;
+	margin-right: 30px;
 }
 
-#info_area {
-	#position:relative;
-	padding-left:980px;
-	width:250px;
-	//width:auto;
-	
-	
+#info_area { #
+	position: relative;
+	padding-left: 980px;
+	width: 250px; //
+	width: auto;
 	border-right: 5px solid #B28A62;
 }
 
 .clear {
-clear: both;
+	clear: both;
 }
 
-
 .book_info {
-    color: #000;
-    font-size:10pt;
-    background: #FFDFBF;
-    padding:10px;
-    margin-left:10px;
-    padding-right:10px;
+	color: #000;
+	font-size: 10pt;
+	background: #FFDFBF;
+	padding: 10px;
+	margin-left: 10px;
+	padding-right: 10px;
 }
 
 .pic_bar {
 	color: #000;
 	background: #509CB2;
-    padding:10px;
+	padding: 10px;
 }
 
 #fusszeile {
 	clear: both;
 	background: #B28A62;
 	padding: 10px;
-	margin-top:10px;
+	margin-top: 10px;
 	border-top: 2px solid #ddd;
 	text-align: center;
-	color: #FFD2A6;
-	//position:relative;
-	//bottom:0px;
-	//margin-left:-450px;
+	color: #FFD2A6; //
+	position: relative; //
+	bottom: 0px; //
+	margin-left: -450px;
 }
 
 /* special contents */
-
 #title {
-   text-decoration: none;
-   font-family:Georgia, serif;
-   font-size:20px;
-   font-weight:bold;
-   letter-spacing:0.1em;
-   margin-top:8px;
-   margin-right:30px;
-	 color: #B28A62;
-	 float:left;
-	
+	text-decoration: none;
+	font-family: Georgia, serif;
+	font-size: 20px;
+	font-weight: bold;
+	letter-spacing: 0.1em;
+	margin-top: 8px;
+	margin-right: 30px;
+	color: #B28A62;
+	float: left;
 }
 
 img.header_img {
-    padding:8px;
-    height:130px;
+	padding: 8px;
+	height: 130px;
 }
 
 a:link {
-  color:black;
+	color: black;
 }
 
 #nav {
-	background: #B28A62;
-	//margin-top:-20px;
-	
-  padding: 0px;
+	background: #B28A62; //
+	margin-top: -20px;
+	padding: 0px;
 	float: right;
 	width: 100%;
 }
 
-
+#nav2 {
+	//background: #fff; //
+	//margin-bottom: 100px;
+	padding-bottom: 50px;
+	float: right;
+	width: 100%;
+}
 
 /*
 Durch diese Regel erscheint "nav", als waere es Teil von "wrap".
@@ -145,60 +140,84 @@ Durch diese Regel erscheint "nav", als waere es Teil von "wrap".
 	list-style-type: none;
 }
 
+#nav2 ul {
+	list-style-type: none;
+}
+
 #nav ul li {
-padding: 5px;
-float:left;
+	padding: 5px;
+	float: left;
+}
+
+#nav2 ul li {
+	padding: 5px;
+	float: left;
+}
+
+#nav ul li {
+	font-weight: bold;
+	padding: 5px;
 }
 
 #nav ul li a {
+	color: #000;
+	text-decoration: none;
+}
+
+#nav2 ul li a {
 	text-decoration: none;
 	color: #000;
 	font-weight: bold;
-	padding:5px;
-}
-#nav ul li.aktiv {
-	background: #FFD2A6;
-	color: #509CB2;
+	padding: 5px;
+	//border-top: 2px solid #000;
 }
 
-#nav ul li a.aktiv {
-	//background: #FFD2A6;
-	//color: #509CB2;//
-	//border-top: 2px solid #ccc;
+
+#nav ul li.aktiv { //
+	background: #FFD2A6;
+	color: #FFDFBF;
+	border-top: 2px solid #FFDFBF;
+}
+
+#nav2 ul li.aktiv { 
+	//background: #FFD2A6; 
+	color: #A6EBFF; 
+	border-top: 2px solid #A6EBFF;
 }
 
 #nav ul li a:hover {
-color: #A6EBFF;
+	color: #A6EBFF;
 }
 
-ul.link_list {
-  //margin-left:440px;
-  padding-left:10px;
-  list-style:none;
-  background-color:#A6EBFF;
+#nav2 ul li a:hover {
+	color: #A6EBFF;
 }
 
-li a {
-   text-decoration: none;
-   font-size:12px;
+ul.link_list { //
+	margin-left: 440px;
+	padding-left: 10px;
+	list-style: none;
+	background-color: #A6EBFF;
+}
+
+li {
+	text-decoration: none;
+	font-size: 12px;
 }
 
 a.pagelink {
 	text-decoration: none;
-	color:black;
-	background-image:url(../gif/arrowB28A62_1.gif);
-	background-repeat:no-repeat;
-	padding-left:16px;
+	color: black;
+	background-image: url(../gif/arrowB28A62_1.gif);
+	background-repeat: no-repeat;
+	padding-left: 16px;
 }
-
-
 
 p.pagelink {
-	background-image:url(../jpg/arrowB28A62_1.gif);
-	background-repeat:no-repeat;
-	background-color:yellow;
+	background-image: url(../jpg/arrowB28A62_1.gif);
+	background-repeat: no-repeat;
+	background-color: yellow;
 }
-
 
 /*a.list_link {
    text-decoration: none;
@@ -229,70 +248,59 @@ p.list_link:hover {
 a.list_link:hover {
   color:#FFD2A6;
 }*/
-
 img.pic {
-    padding:5px;
-    width:200px;
+	padding: 5px;
+	width: 200px;
 }
 
 img.travelpics {
-    padding:5px;
+	padding: 5px;
 }
 
-
 img.travelpics_2h {
-    
-    width:150px;
-    height:110px;
+	width: 150px;
+	height: 110px;
 }
 
 img.travelpics_2v {
-    
-    width:150px;
-    height:210px;
+	width: 150px;
+	height: 210px;
 }
 
 img.travelpics_1h {
-    
-    width:315px;
-    //height:110px;
+	width: 315px; //
+	height: 110px;
 }
 
 img.travelpics_1v {
-    
-    width:315px;
-    //height:210px;
+	width: 315px; //
+	height: 210px;
 }
-
-
 
 #breadcrumb ul {
 	list-style-type: square;
 }
 
 #breadcrumb ul li {
-padding: 5px;
-
+	padding: 5px;
 }
 
 #breadcrumb ul li a {
 	text-decoration: none;
-	color: #000;
-	//font-weight: bold;
-	padding:5px;
-	font-size:10pt;
+	color: #000; //
+	font-weight: bold;
+	padding: 5px;
+	font-size: 10pt;
 }
+
 #breadcrumb ul li.aktiv {
 	background: #FFD2A6;
 	color: #509CB2;
 }
 
 #breadcrumb ul li:hover {
-background-color: #A6EBFF;
+	background-color: #A6EBFF;
 }
-
-
-
 
 
 /*

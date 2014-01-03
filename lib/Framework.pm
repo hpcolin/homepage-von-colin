@@ -2,10 +2,17 @@ package Framework;
 
 use strict;
 use XML::Simple qw(XMLin XMLout);
+use Carp;
+
+use Data::Dumper;
 
 sub new {
 	my $class   = shift;
 	my $params  = shift;
+	
+	my $social_share = <<'SHARE';
+
+SHARE
 		
 	my $self = {
 	    page           => $params->{page} || 'index',
@@ -25,36 +32,33 @@ sub new {
             {
                 -language   => 'javascript',
                 -src        => '../js/prototype-1.7.js'
+               # -src        => '../lightbox/js/prototype.js',
             },
+#            {   -language   => 'javascript',
+#                #-src        => '../js/jquery-1.7.js',
+#                -src        => '../socialshareprivacy/jquery-1.7.js',
+#            },
+#            {   -language   => 'javascript',
+#                -src        => '../socialshareprivacy/jquery.socialshareprivacy.js',
+#            },
             {
                 -language   => 'javascript',
                 -src        => '../js/func.js',
             },
-            {   -language   => 'javascript',
-                -src        => '../js/jquery.js',
-            },
-            {   -language   => 'javascript',
-                -src        => 'jquery.socialshareprivacy.js',
-            },
         ],
-        keywords       => q( 
-            Colin 
-            Hotzky 
-            Kochen 
-            Reisen 
-            Buch 
-            Leipzig 
-            Wandern 
-            Urlaubsberichte 
-            Erlangen
-            NŸrnberg
-            FŸrth
-            Franken
-            Perl
-            Artikel)
-	};
+        css            => [
+            { src => '../css/global_design.css' },
+          #  { src => '../socialshareprivacy/socialshareprivacy/socialshareprivacy.css' },
+          ],
+    };
 	
 	bless($self, $class);
+	
+	my $file = '../data/config.xml';
+    
+    
+    $self->{config} = XMLin $file;
+    #die Dumper ( $self->{config});
 	
 	return $self;
 }
@@ -74,7 +78,7 @@ sub get_html {
     
     $html .= $self->{content_start};
     $html .= $self->_get_content();
-    $html .= $self->add_ad('astore_widget') if ($self->get_page() eq 'travel');
+    $html .= $self->add_ad('astore_widget') if ($self->{page} eq 'travel');
     $html .= $self->{content_end};
     
     
@@ -91,6 +95,11 @@ sub set_end_page {
     $self->{end_page} = shift;    
 }
 
+sub set_link_attr {
+    my $self = shift;
+    $self->{link_attr} = shift;
+}
+
 
 sub footer {
     return shift->_get_footer_html();
@@ -99,109 +108,114 @@ sub footer {
 sub navigation  {
     my $self = shift;
     
-    my $c_page = $self->_get_page();
-    my $s_page = $self->_get_subpage();
+    #die Dumper $self->{config};
+    my @first_order  = split /\s/, $self->{config}->{pages}->{order}; # //:;#
     
-    my $html ='<div id="title_bar"><div id="title">Homepage von Colin Hotzky</div><div id="nav">';		
+    my $first_pages  = $self->{config}->{pages}->{page};
+    my $second_pages = $first_pages->{$self->{page}}->{subpage};
     
-    my %pages;
     
-    $pages{index} = { 
-        id    => 'index',
-        href  => 'index.pl',
-        label => 'Home',
-    };
-    $pages{travel} = { 
-        id    => 'travel',
-        href  => 'index.pl?page=travel',
-        label => 'Ausfl&uuml;ge &amp; Reisen',
-        subs  => {
-            greece1997 => {
-                id    => 'greece1997',
-                href  => 'index.pl?page=travel&sub=greece1997',
-                label => 'Griechenland 1997',
-            },
-            uk1997 => {
-                id    => 'uk1997',
-                href  => 'index.pl?page=travel&sub=uk1997',
-                label => 'England, Schottland und Wales 1997',
-            },
-            france1998 => {
-                id    => 'france1998',
-                href  => 'index.pl?page=travel&sub=france1998',
-                label => 'Frankreich 1998',
-            },
-            uk1999 => {
-                id    => 'uk1999',
-                href  => 'index.pl?page=travel&sub=uk1999',
-                label => 'England und Schottland 1999',
-            },
-        },
-    };
-    $pages{books} = { 
-        id    => 'books',
-        #href  => 'http://astore.amazon.de/homepagevonco-21/detail/3836412756',
-        href  => 'index.pl?page=books',
-        label => 'Buchtip',
-    };
-    $pages{rueda} = { 
-        id    => 'rueda',
-        href  => 'index.pl?page=rueda',
-        label => 'Rueda',
-    };
-    $pages{gb} = { 
-        id    => 'gb',
-        href  => 'http://www.grafikgaestebuch.de/ggbook.php?userid=65960',
-        label => 'G&auml;stebuch',
-    };
-    $pages{mongers} = { 
-        id    => 'mongers',
-        href  => 'index.pl?page=mongers',
-        label => 'Perl Mongers',
-    };
-    $pages{impressum} = { 
-        id    => 'impressum',
-        href  => 'index.pl?page=impressum',
-        label => 'Impressum',
-    };
+    my $first_page = $first_pages->{$self->{page}};
+    my $second_page = $second_pages->{$self->{subpage}};
     
-    my @page_display = ('index','travel','books','mongers','impressum',);
+    my @second_order = split /\s/, $first_page->{order}; # //:;#
     
-    	         
-
-    $html .= '<ul>';
-
-    for my $key (@page_display) {
-        $html .= '<li id="'
-            . $pages{$key}->{id}
-            . '"';
-        $html .= ' class="aktiv"' if ($key eq $c_page);    
-        $html .= '><a href="'
-            . $pages{$key}->{href}
-            . '">'
-            . $pages{$key}->{label}
-            . '</a></li>';
+    my @breadcrumb_data;
+    
+    push @breadcrumb_data, {href => 'index.pl', label => 'Home'};
+    
+    # die Dumper \@second_order;
+    
+    my $first_id     = $first_page->{pid};
+    my $first_href   = $first_page->{href};
+    my $first_label  = $first_page->{label};
+    
+    my ($second_id, $second_href, $second_label);
+    
+    # title_bar
+    my $html;
+    
+    my $div_title_bar = qq(<div id="title_bar">);
+    
+    my $div_title = qq(<div id="title">Homepage von Colin Hotzky</div>\n);
+    
+    $div_title_bar .= $div_title;
+    
+    my $div_nav = qq(<div id="nav">);	
+    
+    
+    # fill with links
+    $div_nav .= $self->_get_ul_list( {
+        order => \@first_order,
+        pages => $first_pages,
+        id    => $first_id,
+    });
+    
+    $div_nav .=  qq(</div>\n);
+    $div_title_bar .= $div_nav;
+    
+    if ($first_id ne 'index') {
+        push @breadcrumb_data, {href => $first_href, label => $first_label};
     }
     
-    $html .= '</ul>';
-
-
-    $html .= '</div></div></div>';	
+    my $div_nav2;
     
-    $html .= '<div id="header_bar">'    
-          . '<div id="breadcrumb" style="float:right">'
-          . '<ul>'
-          . '<li><a href="index.pl">Home</a></li>';
-          
-    if ($c_page ne 'index') {
-        $html .= '<li><a href="'.$pages{$c_page}->{href}.'">'.$pages{$c_page}->{label}.'</a></li>';
+    # subpage navi bar
+    if (keys %{$first_page->{subpage}}) {
+        $div_nav2 = qq(<div id="nav2">);
+        
+        $second_id = $self->{subpage};
+        $second_href = $second_page->{href};
+        $second_label = $second_page->{label};
+        
+        # fill with links
+        $div_nav2 .= $self->_get_ul_list( {
+            order => \@second_order,
+            pages => $second_pages,
+            id    => $second_id,
+        });
+        
+        $div_nav2 .= qq(</div>\n);
+        if ($self->{subpage}) {
+            push @breadcrumb_data, {href => $second_href, label => $second_label};
+        }
+    } 
+       
+    $div_title_bar .= qq(</div>\n);	
+    
+    $html .= $div_title_bar;
+    
+    
+    my $div_header_bar = qq(<div id="header_bar">\n);
+    
+    my $div_breadcrumb = qq(<div id="breadcrumb" style="float:right">\n)
+          . qq(<ul>\n);
+   
+    for my $bread (@breadcrumb_data) {
+        my $href  = $bread->{href};
+        my $label = $bread->{label};
+            
+        $div_breadcrumb .= qq(<li><a href="$href">$label</a></li>\n);            
     }
     
-    if ($s_page) {
-        $html .= '<li><a href="'.$pages{$c_page}->{subs}->{$s_page}->{href}.'">'.$pages{$c_page}->{subs}->{$s_page}->{label}.'</a></li>';
-    }
     
-    $html .= '</ul></div></div></div><div id="socialshareprivacy"></div>';
+    $div_breadcrumb .= qq(</ul></div>\n);
+    
+    my $iframe = '<iframe id="social" width="600" height="110" frameborder="0" style="display:hidden;"'
+        . 'scrolling="no" marginheight="0" marginwidth="0" src="../sc.html"></iframe>';
+    
+    
+    #$div_breadcrumb .= qq(</div>\n);
+    
+    
+    $div_header_bar .= $iframe;
+
+    $div_header_bar .= $div_breadcrumb;
+    $div_header_bar .= $div_nav2;
+    
+    $div_header_bar .= qq(</div>\n);
+    
+    $html .= $div_header_bar;
     
 	return $html;
 }
@@ -249,25 +263,50 @@ HTML
 }
 
 sub add_javascript {
-    my $self  = shift;
-    my $javascript    = shift;
-    my $islib = shift;
+    my $self       = shift;
+    my $javascript = shift;
+    my $islib      = shift;
     
-    if ($islib) {
+    if (!$islib) {
         push (@{$self->{javascript}}, $javascript);
     }
     else {
+        my %libs = qw(
+        scriptaculous ../lightbox/js/scriptaculous.js?load=effects,builder
+        lightbox      ../lightbox/js/lightbox.js
+        );
         push (@{$self->{javascript}}, {
             -language   => 'javascript',
-            -src        => $javascript,
+            -src        => $libs{$javascript},
         });
     }
     
+    return $self;    
 }
 
 sub add_keywords {
     my $self = shift;
     $self->{keywords} .= shift;
+    return $self;
+}
+
+sub add_css {
+    my $self  = shift;
+    my $css   = shift;
+    my $islib = shift;
+    
+    if (!$islib) {
+        push (@{$self->{css}}, $css);
+    }
+    else {
+        my %libs = qw(
+        lightbox ../lightbox/css/lightbox.css
+        );
+        push (@{$self->{css}}, {
+            src        => $libs{$css},
+        });
+    }
+    
     return $self;
 }
 
@@ -285,11 +324,6 @@ HTML
 
 }
 
-sub _get_page() { return shift->{page};}
-sub get_page() { return shift->{page};}
-
-sub _get_subpage() { return shift->{subpage};}
-
 sub _replace_entities {
     my $self = shift;
     my $html = shift;
@@ -297,11 +331,13 @@ sub _replace_entities {
     $html =~ s/Š/&auml;/gm;
     $html =~ s/€/&Auml;/gm;
     $html =~ s/Ÿ/&uuml;/gm;
+    $html =~ s{\\x\{fc\}}{&uuml;}gm;
     $html =~ s/†/&Uuml;/gm;
     $html =~ s/š/&ouml;/gm;
     $html =~ s/…/&Ouml;/gm;
     $html =~ s/§/&#223;/gm; 
     $html =~s/™/&ocirc;/gm;
+    $html =~s/¤/&sect;/gm;
     
     return $html;  
 }
@@ -323,6 +359,19 @@ sub _get_content {
     return join('',@dat);
 }
 
+sub sub_addressdata() {
+	my $self = shift;
+	
+	my $address = 'Colin Hotzky<br/>Memelstrasse 41<br/>91052 Erlangen';
+	my $contact = 'E-Mail: webmaster (at) hotzky (punkt) de';
+	
+	$self->{content} =~ s/xxxCONTACTxxx/$contact/g;
+	$self->{content} =~ s/xxxADDRESSxxx/$address/g;
+	
+	
+	
+}
+
 # ------------------------------------- SEND PAGE ----------------------------------------
 
 sub send_page() {
@@ -331,15 +380,6 @@ sub send_page() {
     my $cgi = $self->{cgi};
     my $content = $self->{content};
     
-    my $social_share = <<'SHARE';
-jQuery(document).ready(function($){
-      if($('#socialshareprivacy').length > 0){
-        $('#socialshareprivacy').socialSharePrivacy(); 
-      }
-    });
-SHARE
-
-
    # $self-> add_javascript($social_share);
 
 
@@ -353,15 +393,17 @@ SHARE
         #-base   =>'true',
         #-target =>'_blank',
         -meta   =>  { 
-            keywords => $self->{keywords},
-            description         => 'Homepage von Colin Hotzky',
-            copyright           => '1997 - 2012 by Colin Hotzky',
-            'content-language'  => 'de',
+            keywords            => $self->_get_keywords(),
+            description         => $self->_get_description(),
+            copyright           => $self->_get_copyright(),
+            'content-language'  => $self->_get_language(),
             robots              => 'INDEX,FOLLOW',
             'revisit-after'     => '60 days',
         },
-        -style  => { src => '../css/global_design.css' },
+        -style  => $self->{css},
         -script => $self->{javascript},
+        -head   => $self->{link_attr},
+        
         
       #  -BGCOLOR=>'#FFFFCC',
       #  -TEXT   =>'#000000',
@@ -387,5 +429,78 @@ SHARE
     
     return $self;
 }
+
+sub _get_keywords {
+    my $self = shift;
+    
+    my $config = $self->{config};
+    my $page   = $self->{page};
+    
+    my %seen;
+    
+    my %keywords = map {$_ => 1} grep $_ && !$seen{$_}, split /[\s\t\n]+/, $config->{keywords};
+    
+    for (split (/[\s\t\n]+/, $config->{pages}->{page}->{$page})) { # /
+        $keywords{$_} = 1;
+    }
+  
+    return join(',', keys %keywords);
+}
+
+sub _get_description {
+    my $self = shift;
+    
+    return $self->{config}->{description};
+}
+
+sub _get_copyright {
+    my $self = shift;
+    return $self->{config}->{copyright};
+}
+
+sub _get_language {
+    my $self = shift;
+    return $self->{config}->{language};
+}
+
+sub _get_ul_list {
+    my $self   = shift;
+    my $params = shift;
+    
+    my @navi_order = @{$params->{order}};
+    my $navi_pages = $params->{pages};
+    my $navi_id    = $params->{id};
+        
+    my $html = '<ul>';
+
+    for my $ord (@navi_order) {
+        $html .= q(<li id=")
+            . $navi_pages->{$ord}->{pid}
+            . q(");
+        $html .= q( class="aktiv") if ($ord eq $navi_id); 
+       
+        $html .= q(>);
+        
+        if ($ord ne $navi_id) {
+            $html .= q(<a href=") . $navi_pages->{$ord}->{href} . q(">);
+        }
+        else {$html .= q(<span>);}
+        
+        $html .= $navi_pages->{$ord}->{label};
+        
+        if ($ord ne $navi_id) {
+            $html .= q(</a>);
+        }
+        else {$html .= q(</span>);}
+        
+        $html .= q(</li>);
+    }
+    
+    $html .= q(</ul>);
+    
+    #die $html;
+}
+
+
 
 1;
