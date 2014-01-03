@@ -26,11 +26,13 @@ binmode STDOUT, ':encoding(UTF-8)';
 # read cgi-params
 my $page    = $cgi->param('page') || 'index';
 my $subpage = $cgi->param('sub')  || '';
+my $lang    = $cgi->param('lang') || 'de';
 
 my $class_param = {
     page    => $page,
     subpage => $subpage,
     cgi     => $cgi,
+    lang    => $lang,
 };
 
 my $page_obj = Framework->new($class_param);

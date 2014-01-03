@@ -282,14 +282,14 @@ img.travelpics_1v {
 }
 
 #breadcrumb ul li {
-	padding: 5px;
+	padding: 3px;
 }
 
 #breadcrumb ul li a {
 	text-decoration: none;
 	color: #000; //
 	font-weight: bold;
-	padding: 5px;
+	padding: 3px;
 	font-size: 10pt;
 }
 
@@ -300,6 +300,17 @@ img.travelpics_1v {
 
 #breadcrumb ul li:hover {
 	background-color: #A6EBFF;
+}
+
+#lang {
+    float: right;
+    padding: 5px;
+}
+
+img.lang_flag {
+    width: 30px; //
+    height: 10px;
+    padding: 5px;
 }
 
 

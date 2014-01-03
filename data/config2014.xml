@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<config>
+    <keywords>
+        <item de="xxx" en="yyy" />
+        <item de="aaa" en="bbb" />
+    </keywords>
+    <description>
+        <de>Lorem Ipsum</de>
+        <en>Lorem Ipsum</en>
+    </description>
+    <copyright>1997 - 2014 by Colin Hotzky</copyright>
+    <language de="de-DE" en="en-UK" />
+    <pages>
+        <page id="index" pid="index" href="index.pl" de="Home" en="Home"/>
+        <page id="travel" pid="travel" href="index.pl?page=travel" de="Ausfl\x{fc}ge &amp; Reisen" en="Travels">
+            <subpage id="greece1997" pid="greece1997"
+                href="index.pl?page=travel&amp;sub=greece1997" de="Griechenland 1997" />
+            <order>greece1997</order>
+            <keywords>
+                <item de="Lorem Ipsum" en="Lorem Ipsum"/>
+            </keywords>
+        </page>
+        <order>index travel</order>
+    </pages>
+</config>
+

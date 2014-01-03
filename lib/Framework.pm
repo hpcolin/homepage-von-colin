@@ -6,6 +6,8 @@ use Carp;
 
 use Data::Dumper;
 
+my $LANG;
+
 sub new {
 	my $class   = shift;
 	my $params  = shift;
@@ -54,7 +56,9 @@ SHARE
 	
 	bless($self, $class);
 	
-	my $file = '../data/config.xml';
+	$LANG = $params->{lang};
+	
+	my $file = '../data/config2014.xml';
     
     
     $self->{config} = XMLin $file;
@@ -120,24 +124,28 @@ sub navigation  {
     
     my @second_order = split /\s/, $first_page->{order}; # //:;#
     
-    my @breadcrumb_data;
-    
-    push @breadcrumb_data, {href => 'index.pl', label => 'Home'};
-    
     # die Dumper \@second_order;
     
     my $first_id     = $first_page->{pid};
-    my $first_href   = $first_page->{href};
-    my $first_label  = $first_page->{label};
+    my $first_href   = $first_page->{href} . add_lang_to_url($first_page->{href});
+    my $first_label  = $first_page->{$LANG};
     
     my ($second_id, $second_href, $second_label);
     
-    # title_bar
-    my $html;
+    # <div id="title_bar">
+    #     <div id="title">
+    #         <div id="nav">Navi Links
+    #              <div id="lang">flags
+    #              </div>
+    #         </div>
+    #         <div id="nav2">
+    #     </div>
+    # </div>
     
+    # ************* TITLEBAR PART1 *************
     my $div_title_bar = qq(<div id="title_bar">);
     
-    my $div_title = qq(<div id="title">Homepage von Colin Hotzky</div>\n);
+    my $div_title = qq(<div id="title">) . $self->_get_description() . qq(</div>\n);
     
     $div_title_bar .= $div_title;
     
@@ -150,13 +158,32 @@ sub navigation  {
         pages => $first_pages,
         id    => $first_id,
     });
+
+    # ************* TITLEBAR PART2 *************
+    my $url = defined $second_page->{href}
+        ? $second_page->{href}
+        : $first_page->{href};
     
+    my $div_nav_lang .= qq(<div id="lang">);
+    $div_nav_lang .= qq(<span><a href="$url&lang=de"><img class="lang_flag" src="../png/de.png" border="0"/></a>);
+    $div_nav_lang .= qq(<a href="$url&lang=en"><img class="lang_flag" src="../png/en.png" border="0"/></a>);
+    $div_nav_lang .= qq(</span></div>);
+   
+    $div_nav .= $div_nav_lang;
     $div_nav .=  qq(</div>\n);
     $div_title_bar .= $div_nav;
     
+    # ************* BREADCRUMB DATA *************
+    
+    my @breadcrumb_data;
+    
+    push @breadcrumb_data, {href => 'index.pl' . add_lang_to_url(), label => 'Home'};
+        
     if ($first_id ne 'index') {
         push @breadcrumb_data, {href => $first_href, label => $first_label};
     }
+    
+    # ************* 2ND NAVIGATION *************
     
     my $div_nav2;
     
@@ -165,8 +192,8 @@ sub navigation  {
         $div_nav2 = qq(<div id="nav2">);
         
         $second_id = $self->{subpage};
-        $second_href = $second_page->{href};
-        $second_label = $second_page->{label};
+        $second_href = $second_page->{href} . add_lang_to_url($second_page->{href});
+        $second_label = $second_page->{$LANG};
         
         # fill with links
         $div_nav2 .= $self->_get_ul_list( {
@@ -183,14 +210,17 @@ sub navigation  {
        
     $div_title_bar .= qq(</div>\n);	
     
-    $html .= $div_title_bar;
+    # ************* HEADERBAR *************
     
+    # <div id="header_bar">
+    #     <div id="breadcrumb"
+    #     </div>
+    # </div>
     
     my $div_header_bar = qq(<div id="header_bar">\n);
     
     my $div_breadcrumb = qq(<div id="breadcrumb" style="float:right">\n)
           . qq(<ul>\n);
-   
     for my $bread (@breadcrumb_data) {
         my $href  = $bread->{href};
         my $label = $bread->{label};
@@ -201,12 +231,7 @@ sub navigation  {
     
     $div_breadcrumb .= qq(</ul></div>\n);
     
-    my $iframe = '<iframe id="social" width="600" height="110" frameborder="0" style="display:hidden;"'
-        . 'scrolling="no" marginheight="0" marginwidth="0" src="../sc.html"></iframe>';
-    
-    
-    #$div_breadcrumb .= qq(</div>\n);
-    
+    my $iframe = '';
     
     $div_header_bar .= $iframe;
 
@@ -215,7 +240,10 @@ sub navigation  {
     
     $div_header_bar .= qq(</div>\n);
     
-    $html .= $div_header_bar;
+    # set html
+    
+    my $html .= $div_title_bar; 
+    $html    .= $div_header_bar;
     
 	return $html;
 }
@@ -437,11 +465,14 @@ sub _get_keywords {
     my $page   = $self->{page};
     
     my %seen;
+        
+    # common keywords
+    my %keywords = map {$_ => 1} grep $_ && !$seen{$_}, map {$_->{$LANG}} @{$config->{keywords}->{item}};
     
-    my %keywords = map {$_ => 1} grep $_ && !$seen{$_}, split /[\s\t\n]+/, $config->{keywords};
     
-    for (split (/[\s\t\n]+/, $config->{pages}->{page}->{$page})) { # /
-        $keywords{$_} = 1;
+    # page key words
+    for (@{$config->{pages}->{page}->{$page}->{keywords}->{item}}) { # /
+        $keywords{$_->{$LANG}} = 1 if $_->{$LANG} && !$seen{$_->{$LANG}};
     }
   
     return join(',', keys %keywords);
@@ -450,7 +481,7 @@ sub _get_keywords {
 sub _get_description {
     my $self = shift;
     
-    return $self->{config}->{description};
+    return $self->{config}->{description}->{$LANG};
 }
 
 sub _get_copyright {
@@ -486,7 +517,7 @@ sub _get_ul_list {
         }
         else {$html .= q(<span>);}
         
-        $html .= $navi_pages->{$ord}->{label};
+        $html .= $navi_pages->{$ord}->{$LANG};
         
         if ($ord ne $navi_id) {
             $html .= q(</a>);
@@ -499,6 +530,12 @@ sub _get_ul_list {
     $html .= q(</ul>);
     
     #die $html;
+}
+
+sub add_lang_to_url {
+    return (shift =~ /\?/) 
+       ? ('&lang=' . $LANG) 
+       : ('?lang=' . $LANG);
 }
 
 
