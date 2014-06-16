@@ -72,6 +72,7 @@ sub get_html {
     
     my $html = $self->{wrap_start};
     
+    # Infoleiste (1)
     my $info = $self->_get_content(1);
     
     if ($info) {
@@ -80,8 +81,10 @@ sub get_html {
         $html .= $self->{pic_end};
     }
     
+    # Content laden
     $html .= $self->{content_start};
     $html .= $self->_get_content();
+    # Werbewidget laden
     $html .= $self->add_ad('astore_widget') if ($self->{page} eq 'travel');
     $html .= $self->{content_end};
     
@@ -113,19 +116,26 @@ sub navigation  {
     my $self = shift;
     
     #die Dumper $self->{config};
+    # Reihenfolge der Mainnavigation
     my @first_order  = split /\s/, $self->{config}->{pages}->{order}; # //:;#
     
+    # die Dumper \@first_order;
+    # Hash ueber die Mainnavi-Seiten
     my $first_pages  = $self->{config}->{pages}->{page};
+    # Hash ueber die Secondnavi der aktuellen Seite
     my $second_pages = $first_pages->{$self->{page}}->{subpage};
     
-    
+    # Hash ueber die aktuelle Seite
     my $first_page = $first_pages->{$self->{page}};
+    # Hash ueber die aktuelle Subseite
     my $second_page = $second_pages->{$self->{subpage}};
     
+    # Reihenfolge der Second-Navi
     my @second_order = split /\s/, $first_page->{order}; # //:;#
     
     # die Dumper \@second_order;
     
+    # Daten der aktuelle Seite: id, url, label
     my $first_id     = $first_page->{pid};
     my $first_href   = $first_page->{href} . add_lang_to_url($first_page->{href});
     my $first_label  = $first_page->{$LANG};
@@ -163,10 +173,10 @@ sub navigation  {
     my $url = defined $second_page->{href}
         ? $second_page->{href}
         : $first_page->{href};
-    
+        
     my $div_nav_lang .= qq(<div id="lang">);
-    $div_nav_lang .= qq(<span><a href="$url&lang=de"><img class="lang_flag" src="../png/de.png" border="0"/></a>);
-    $div_nav_lang .= qq(<a href="$url&lang=en"><img class="lang_flag" src="../png/en.png" border="0"/></a>);
+    $div_nav_lang .= qq(<span><a href="$url).add_lang_to_url($url, 'de').qq("><img class="lang_flag" src="../png/de.png" border="0"/></a>);
+    $div_nav_lang .= qq(<a href="$url).add_lang_to_url($url, 'en').qq("><img class="lang_flag" src="../png/en.png" border="0"/></a>);
     $div_nav_lang .= qq(</span></div>);
    
     $div_nav .= $div_nav_lang;
@@ -370,11 +380,13 @@ sub _replace_entities {
     return $html;  
 }
 
+# bei info 1 wird links die Infoleiste generiert
 sub _get_content {
     my $self = shift;
     my $info = shift || '';
     
-    my $file = "../data/". $self->{pagename} . ($info ? '_info' : '') . '.xml';
+    my $file = "../data/". $self->{pagename} . ($info ? '_info' : '');
+    $file .= ($LANG eq 'en' ? '_en' : '') . '.xml';
     
     unless (-e $file) { return ''; }
     
@@ -505,6 +517,7 @@ sub _get_ul_list {
     my $html = '<ul>';
 
     for my $ord (@navi_order) {
+        next unless $navi_pages->{$ord}->{$LANG};
         $html .= q(<li id=")
             . $navi_pages->{$ord}->{pid}
             . q(");
@@ -513,7 +526,7 @@ sub _get_ul_list {
         $html .= q(>);
         
         if ($ord ne $navi_id) {
-            $html .= q(<a href=") . $navi_pages->{$ord}->{href} . q(">);
+            $html .= q(<a href=") . $navi_pages->{$ord}->{href} . add_lang_to_url($navi_pages->{$ord}->{href}) . q(">);
         }
         else {$html .= q(<span>);}
         
@@ -533,9 +546,11 @@ sub _get_ul_list {
 }
 
 sub add_lang_to_url {
-    return (shift =~ /\?/) 
-       ? ('&lang=' . $LANG) 
-       : ('?lang=' . $LANG);
+    my $url = shift;
+    my $mylang = shift || $LANG;
+    return ($url =~ /\?/) 
+       ? ('&lang=' . $mylang) 
+       : ('?lang=' . $mylang);
 }
 
 

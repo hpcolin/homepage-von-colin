@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <config>
     <keywords>
-        <item de="xxx" en="yyy" />
-        <item de="aaa" en="bbb" />
+        <item de="Colin" en="Colin" />
+        <item de="Hotzky" en="Hotzky" />
+        <item de="Kochen" en="Kochen" />
+        <item de="Reisen" en="Travel" />
+        <item de="Buch" en="Book" />
+        <item de="Leipzig" en="Leipzig" />
+        <item de="Wandern" en="Urlaubsberichte" />
+        <item de="Erlangen" en="Erlangen" />
+        <item de="N\x{fc}rnberg" en="Nuremberg" />
+        <item de="F\x{fc}rth" en="Furth" />
+        <item de="Franken" en="Franken" />
+        <item de="Perl" en="Artikel" />
+        <item de="ASIX" en="ASIX" />
+        <item de="Mongers" en="Mongers" />
     </keywords>
     <description>
-        <de>Lorem Ipsum</de>
-        <en>Lorem Ipsum</en>
+        <de>Homepage von Colin Hotzky</de>
+        <en>Homepage of Colin Hotzky</en>
     </description>
     <copyright>1997 - 2014 by Colin Hotzky</copyright>
     <language de="de-DE" en="en-UK" />
@@ -15,12 +27,44 @@
         <page id="travel" pid="travel" href="index.pl?page=travel" de="Ausfl\x{fc}ge &amp; Reisen" en="Travels">
             <subpage id="greece1997" pid="greece1997"
                 href="index.pl?page=travel&amp;sub=greece1997" de="Griechenland 1997" />
-            <order>greece1997</order>
+            <subpage id="uk1997" pid="uk1997"
+                href="index.pl?page=travel&amp;sub=uk1997" de="England, Schottland und Wales 1997" />
+            <subpage id="france1998" pid="france1998"
+                href="index.pl?page=travel&amp;sub=france1998" de="Frankreich 1998" />
+            <subpage id="uk1999" pid="uk1999"
+                href="index.pl?page=travel&amp;sub=uk1999" en="Great Britain 1999" />
+            <order>greece1997 uk1997 france1998 uk1999</order>
             <keywords>
-                <item de="Lorem Ipsum" en="Lorem Ipsum"/>
+                <item de="Ausfluege" en="Short Trips"/>
+                <item de="Griechenland" en="Greece"/>
+                <item de="Frankreich" en="France"/>
+                <item de="England" en="England"/>
+                <item de="Schottland" en="Scotland"/>
+                <item de="Wales" en="Wales"/>
+                <item de="Sprachreise" en="Language Trip"/>
+                <item de="Wohnen" en="Living"/>
+                <item de="Wein" en="Wine"/>
+                <item de="Bed" en="Bed"/>
+                <item de="Breakfast" en="Breakfast"/>
+                <item de="Bournemouth" en="Bournemouth"/>
+                <item de="London" en="London"/>
             </keywords>
         </page>
-        <order>index travel</order>
+        <page id="mongers" pid="mongers" href="index.pl?page=mongers"
+            de="Perl Mongers">
+            <keywords>
+                <item de="Perl" en="Perl"/>
+                <item de="Programme" en="Programs"/>
+                <item de="Programmieren" en="Software Development"/>
+                <item de="Mongers" en="Mongers"/>
+                <item de="Monks" en="Monks"/>
+                <item de="Kamel" en="Camel"/></keywords>
+        </page>
+        <page id="impressum" pid="impressum" href="index.pl?page=impressum"
+            de="Impressum" en="Impressum"/>
+        <page id="admin" pid="admin"
+            href="http://jungleware.de/admin/cgi-bin/index.pl" de="Admin" en="Admin"/>
+        <order>index travel mongers impressum admin</order>
     </pages>
 </config>
 
